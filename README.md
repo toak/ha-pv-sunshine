@@ -10,6 +10,20 @@ PV Sunshine compares measured PV production with an approximate clear-sky refere
 
 > These are sunlight **estimates**, not measurements of cloud cover or direct irradiance. Curtailment, clipping, snow, shadows and inverter faults can look like clouds. Start by observing the sensors before connecting them to moving blinds.
 
+## Why PV Sunshine exists
+
+The idea grew out of using [Adaptive Cover by basbruss](https://github.com/basbruss/adaptive-cover) to manage blinds. In the installation that inspired this project, cloud-based weather data did not always match the sunshine at the house: the blinds sometimes closed for sun protection even though it was not sunny locally.
+
+PV Sunshine aims to provide the most accurate and timely **local sunshine signal possible from the available sensors**, so shading decisions reflect what is happening at the building. Actual PV production supplies local evidence that a remote weather report can miss. This is an accuracy goal, not a guarantee: PV output alone cannot distinguish every cloud from shading, snow or inverter curtailment, and it does not measure general weather conditions.
+
+Adaptive Cover is the inspiration and a potential consumer of these signals; PV Sunshine remains an independent integration. Compatibility with a particular cover controller's input format must be configured and verified separately.
+
+### Combining local measurements with existing weather data
+
+A possible future enhancement is to use weather entities already available in Home Assistant as optional supporting inputs, without adding another API account. Fresh PV readings would remain the primary evidence for immediate sunshine; weather conditions or cloud coverage, where provided, could add context or serve as an explicitly identified fallback when PV inference is unavailable. Outdoor light/irradiance sensors and inverter curtailment information could further improve confidence.
+
+Conflicting or stale inputs should reduce confidence rather than silently override a reliable local observation. Exposing the active source and confidence would let blind automations decide whether to act or hold their position. **This combination is a proposed direction, not a feature in v0.1.x.**
+
 ## Requirements and installation
 
 - Home Assistant **2026.9.0 or later**; tested with 2026.9.4 / Python 3.14.
