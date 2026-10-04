@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- Fix the unknown error after submitting the installation name: numeric fields now use serializable Home Assistant number selectors.
+- Fix the same serialization error in plane editing and detection settings.
+- Preserve finite-number and range validation, and add regression tests using HA’s HTTP form serializer.
+
 ## 0.1.0
 
 Initial community release:

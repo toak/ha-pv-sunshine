@@ -13,16 +13,23 @@ from homeassistant.helpers import selector
 from .const import DEFAULTS, DOMAIN
 
 
-def number(low, high):
-    """Validate finite numbers as well as their inclusive range."""
+class FiniteNumberSelector(selector.NumberSelector):
+    """A native, serializable number control that also rejects NaN."""
 
-    def validate(value):
-        value = float(value)
-        if not isfinite(value) or not low <= value <= high:
-            raise vol.Invalid("out of range")
+    def __call__(self, data):
+        value = super().__call__(data)
+        if not isfinite(value):
+            raise vol.Invalid("value must be finite")
         return value
 
-    return validate
+
+def number(low, high):
+    """Use HA's number selector so forms serialize for the frontend."""
+    return FiniteNumberSelector(
+        selector.NumberSelectorConfig(
+            min=low, max=high, step="any", mode=selector.NumberSelectorMode.BOX
+        )
+    )
 
 
 def plane_schema(defaults=None):
