@@ -7,7 +7,10 @@ async def async_get_config_entry_diagnostics(hass, entry):
     coordinator = entry.runtime_data
     return {
         "model": "haurwitz_isotropic_v1",
-        "options": coordinator.options,
+        "options": {
+            k: ("**REDACTED**" if k in ("weather_entity", "pv_inhibit_entity") else v)
+            for k, v in coordinator.options.items()
+        },
         "planes": [
             {
                 "azimuth": p.azimuth,

@@ -16,3 +16,7 @@ The initial [GitHub Validate run](https://github.com/toak/ha-pv-sunshine/actions
 ## 0.1.1 setup regression
 
 The initial tests missed HA's HTTP form serialization boundary. Reproduced the first-submit failure with the actual `FlowManagerIndexView` serializer: four new tests failed on 0.1.0 (initial plane, tuning, add-plane and edit-plane forms). After replacing opaque numeric validators with native number selectors, all 40 tests pass, including JSON serialization of those forms and the existing finite/range validation. Coverage remains 99.52%. Local lint, formatting and official Hassfest pass.
+
+## 0.2.0 weather enrichment
+
+59 tests pass against HA 2026.9.4; combined statement/branch coverage is 99.66%. The weather module and enrichment policy have 100% coverage. Cases include sunny/cloudy refinement, preserved rain/snow/fog/wind, warm-up and nighttime fallback, stale/missing sources, optional inhibition, feedback-loop rejection, option persistence/removal, privacy redaction, source unit conversion and all three forecast types. Ruff and local official Hassfest pass. Tests use synthetic HA states and mocked provider forecast responses; no live-provider accuracy or real-home field trial is claimed.

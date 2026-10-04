@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- Optional weather enrichment: refine regional sky conditions with stable local PV evidence.
+- Preserve non-sky weather, provider measurements and supported forecasts.
+- Expose original condition, active source, qualitative confidence and fallback reason.
+- Configure weather freshness and an optional curtailment/inhibit binary sensor.
+- Preserve weather settings when tuning PV detection; remove the weather entity when disabled.
+- Add serialized options-flow, enrichment, unit-conversion and forecast regression coverage.
+
 ## 0.1.1
 
 - Fix the unknown error after submitting the installation name: numeric fields now use serializable Home Assistant number selectors.

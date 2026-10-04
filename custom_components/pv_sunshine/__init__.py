@@ -18,7 +18,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         f"{entry.entry_id}_{scope}_" for scope in ["total", *(p.id for p in coordinator.planes)]
     )
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.platform == "pv_sunshine" and not entity.unique_id.startswith(prefixes):
+        if entity.platform == "pv_sunshine" and (
+            not entity.unique_id.startswith(prefixes)
+            or (
+                entity.unique_id == f"{entry.entry_id}_total_enriched_weather"
+                and not entry.options.get("weather_entity")
+            )
+        ):
             registry.async_remove(entity.entity_id)
     coordinator.start()
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

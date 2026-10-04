@@ -43,7 +43,14 @@ class SunshineCoordinator(DataUpdateCoordinator):
         """Listeners are owned by the config entry and cleaned up on unload."""
         self.entry.async_on_unload(
             async_track_state_change_event(
-                self.hass, [p.entity_id for p in self.planes], self._changed
+                self.hass,
+                [p.entity_id for p in self.planes]
+                + [
+                    self.options[k]
+                    for k in ("weather_entity", "pv_inhibit_entity")
+                    if self.options.get(k)
+                ],
+                self._changed,
             )
         )
         self.entry.async_on_unload(

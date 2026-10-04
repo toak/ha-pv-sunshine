@@ -3,7 +3,7 @@
 from homeassistant.const import Platform
 
 DOMAIN = "pv_sunshine"
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.WEATHER]
 DEFAULTS = {
     "smoothing_seconds": 60.0,
     "on_ratio": 0.75,

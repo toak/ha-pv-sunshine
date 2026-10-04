@@ -48,3 +48,11 @@ A later model can blend the physical baseline with a robust upper quantile (for 
 6. Add migration, reset/export and reproducibility tests before deployment.
 
 The initial release does **not** learn, read Recorder history, store a training set or claim to discover shading automatically.
+
+## Weather enrichment v0.2
+
+`enrichment.py` is a pure policy layer over the aggregate `Reading`. It receives only a fresh recognized provider condition and an optional inhibit flag. PV overrides sky-only conditions after the stable classifier and fast direct-sun path agree for sunny/cloudy. Partly cloudy uses the stable classification. Non-sky conditions are preserved because PV cannot exclude precipitation, fog, or wind. The confidence categories are provenance/quality labels, not calibrated probabilities.
+
+`weather.py` copies current provider measurements and units into HA's native weather properties and forwards forecasts through `weather.get_forecasts`. Forecast response values use the source entity's display units, which are used as the wrapper's native units before normal HA conversion. Forecast conditions are never rewritten. Unsupported forecasts and unavailable source data return no forecast. Ten-minute subscription refresh callbacks are removed on unload.
+
+The weather option is disabled by default. No model thresholds or PV entities change when enabling enrichment. An optional inhibit input blocks overrides unless its state is explicitly off; it does not alter the original raw PV signals. Own-integration sources are rejected to prevent feedback loops.

@@ -10,7 +10,7 @@ COMPONENT = ROOT / "custom_components/pv_sunshine"
 def test_metadata_and_translations():
     manifest = json.loads((COMPONENT / "manifest.json").read_text())
     assert manifest["domain"] == "pv_sunshine"
-    assert manifest["version"] == "0.1.1"
+    assert manifest["version"] == "0.2.0"
     assert manifest["config_flow"] is True
     assert manifest["iot_class"] == "calculated"
     assert manifest["requirements"] == []

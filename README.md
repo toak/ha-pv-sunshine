@@ -6,7 +6,7 @@
 
 [![Open PV Sunshine in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=toak&repository=ha-pv-sunshine&category=integration)
 
-PV Sunshine compares measured PV production with an approximate clear-sky reference for your roof. Use the resulting signals for blinds, shading and other building automations. It works with any inverter integration exposing production power in W or kW. There are no cloud calls, API keys or runtime downloads.
+PV Sunshine compares measured PV production with an approximate clear-sky reference for your roof. Use the resulting signals for blinds, shading and other building automations. It works with any inverter integration exposing production power in W or kW. The PV model makes no cloud calls and needs no API keys or runtime downloads. Optional weather enrichment reuses an existing HA weather integration.
 
 > These are sunlight **estimates**, not measurements of cloud cover or direct irradiance. Curtailment, clipping, snow, shadows and inverter faults can look like clouds. Start by observing the sensors before connecting them to moving blinds.
 
@@ -18,11 +18,34 @@ PV Sunshine aims to provide the most accurate and timely **local sunshine signal
 
 Adaptive Cover is the inspiration and a potential consumer of these signals; PV Sunshine remains an independent integration. Compatibility with a particular cover controller's input format must be configured and verified separately.
 
-### Combining local measurements with existing weather data
+### Enrich regional weather with local sunshine
 
-A possible future enhancement is to use weather entities already available in Home Assistant as optional supporting inputs, without adding another API account. Fresh PV readings would remain the primary evidence for immediate sunshine; weather conditions or cloud coverage, where provided, could add context or serve as an explicitly identified fallback when PV inference is unavailable. Outdoor light/irradiance sensors and inverter curtailment information could further improve confidence.
+From **v0.2.0**, open **PV Sunshine → Configure → Weather enrichment** and select an existing Home Assistant weather entity. This creates **Local weather**, normally `weather.pv_sunshine_local_weather`, which you can select as the weather input in your cover controller. Entity IDs depend on your installation name and existing entities; use the actual ID shown by Home Assistant.
 
-Conflicting or stale inputs should reduce confidence rather than silently override a reliable local observation. Exposing the active source and confidence would let blind automations decide whether to act or hold their position. **This combination is a proposed direction, not a feature in v0.1.x.**
+For example, your provider can report `partlycloudy` while PV Sunshine reports `sunny` or `cloudy` based on stable local PV evidence. This **enriches** regional weather; it does not average the two sources or convert PV power into a cloud-cover percentage.
+
+- Stable local sky detection refines `sunny`, `partlycloudy`, `cloudy` and daytime `clear-night` reports. A sunny override also requires the fast direct-sun signal to be on; a cloudy override requires it to be off. Startup and transitions retain the provider condition until evidence agrees.
+- Rain, snow, fog, wind, storms and other non-sky conditions remain from the provider. The `local_sky_condition` attribute still exposes the local observation alongside them.
+- Temperature, humidity, wind, pressure and other supported weather measurements retain the provider values, with normal HA unit conversion. `cloud_coverage` remains the provider's regional estimate, even when local sunshine differs.
+- Daily, hourly and twice-daily forecasts are forwarded when the source supports them. **PV does not rewrite forecasts.** Forecasts are requested through HA's weather service; active forecast subscribers refresh every ten minutes. The original weather integration remains responsible for its API access and caching.
+- When PV is unavailable, too weak, warming up or nighttime, the entity falls back to fresh provider conditions. It never infers a clear night from zero PV output. Missing/stale provider measurements are not copied; valid local daytime sunshine can still be reported without them. When neither source supports a condition, the entity is unavailable.
+
+The **weather report freshness timeout** defaults to one hour and uses the last report to HA. Adjust it to your provider's update interval. An upstream service that repeatedly reports cached data can still appear fresh.
+
+An optional **PV inference blocked / curtailment sensor** disables PV overrides when it is `on`, unknown, unavailable or missing. Select a binary sensor that indicates unreliable production, such as active export limiting. Only an explicit `off` permits local enrichment. This does not automatically detect curtailment, and it affects the enriched weather entity only; the original PV entities remain unchanged.
+
+Attributes explain every decision:
+
+| Attribute | Meaning |
+| --- | --- |
+| `original_condition` | Fresh provider condition before enrichment |
+| `condition_source` | `pv`, `weather` or `none` |
+| `sunshine_confidence` | `local_estimate`, `provider_only` or `unavailable`; qualitative, not a probability |
+| `enrichment_reason` | Why local evidence or fallback was used |
+| `local_sky_condition` | Stable PV sky classification, independent of provider rain/wind |
+| `weather_source_available` | Whether provider state is recognized and fresh |
+
+For Adaptive Cover, select the new weather entity in its climate settings and configure which conditions count as sunny. Inspect the behavior before enabling blind movements. No cover-controller settings are changed automatically. Clear the optional weather selection to remove the enriched entity; the local PV sensors continue to work. No additional API account is needed. Local light-sensor fusion and automatic curtailment detection remain future work.
 
 ## Requirements and installation
 
@@ -69,7 +92,7 @@ The installation and **each plane** expose:
 
 Four more direct-sun entities gate the aggregate estimate by north/east/south/west **vertical facade geometry**. Per-plane direct sun instead uses that plane's tilt and azimuth. A west facade and a west-facing roof are different surfaces. Directional entities do not model trees, overhangs, window orientation or neighbouring buildings. `quality` attributes explain `ok`, `night`, `insufficient_light` or `source_unavailable`.
 
-There is deliberately no weather entity: PV output cannot establish rain, temperature, wind or clear night skies.
+An optional **Local weather** entity enriches an existing weather source as described above. PV output alone does not establish rain, temperature, wind or clear night skies.
 
 ## Detection defaults
 
@@ -129,7 +152,7 @@ Zero export limits, full batteries, grid limits or inverter derating can reduce 
 - **Blinds react too often:** lengthen the off delay or use a longer automation `for` duration.
 - **After changes:** configuration updates reload the integration and reset smoothing and pending timers.
 
-Download diagnostics from the integration menu. They contain model settings, plane geometry and current readings but omit coordinates, installation/plane names and source entity IDs. Review diagnostics before sharing; production values and roof geometry are still information about your home. No data is sent anywhere by the integration. Home Assistant may retain entity history according to your Recorder configuration.
+Download diagnostics from the integration menu. They contain model settings, plane geometry and current readings but omit coordinates, installation/plane names and source entity IDs. Review diagnostics before sharing; production values and roof geometry are still information about your home. PV Sunshine does not upload your PV measurements. When enrichment is enabled, the selected weather integration retains its own API access and privacy behavior. Home Assistant may retain entity history according to your Recorder configuration.
 
 ## License
 

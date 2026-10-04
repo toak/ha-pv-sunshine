@@ -121,7 +121,8 @@ class OptionsFlow(config_entries.OptionsFlow):
 
     async def async_step_init(self, user_input=None):
         return self.async_show_menu(
-            step_id="init", menu_options=["tuning", "add_plane", "edit_plane", "remove_plane"]
+            step_id="init",
+            menu_options=["tuning", "add_plane", "edit_plane", "remove_plane", "weather"],
         )
 
     async def async_step_tuning(self, user_input=None):
@@ -130,7 +131,9 @@ class OptionsFlow(config_entries.OptionsFlow):
             if user_input["off_ratio"] >= user_input["on_ratio"]:
                 errors["base"] = "threshold_order"
             else:
-                return self.async_create_entry(title="", data=user_input)
+                return self.async_create_entry(
+                    title="", data=dict(self.config_entry.options) | user_input
+                )
         defaults = DEFAULTS | dict(self.config_entry.options) | (user_input or {})
         ranges = {
             "smoothing_seconds": (0, 600),
@@ -150,6 +153,54 @@ class OptionsFlow(config_entries.OptionsFlow):
                 {
                     vol.Required(key, default=defaults[key]): number(*limits)
                     for key, limits in ranges.items()
+                }
+            ),
+        )
+
+    async def async_step_weather(self, user_input=None):
+        """Opt into regional weather enrichment; empty selections disable it."""
+        errors = {}
+        if user_input is not None:
+            for key, domain in (
+                ("weather_entity", "weather"),
+                ("pv_inhibit_entity", "binary_sensor"),
+            ):
+                entity_id = user_input.get(key)
+                if not entity_id:
+                    continue
+                state = self.hass.states.get(entity_id)
+                registered = er.async_get(self.hass).async_get(entity_id)
+                if (
+                    state is None
+                    or state.domain != domain
+                    or (registered is not None and registered.platform == DOMAIN)
+                ):
+                    errors["base"] = "invalid_weather_source"
+            if not errors:
+                options = dict(self.config_entry.options)
+                for key in ("weather_entity", "pv_inhibit_entity"):
+                    options.pop(key, None)
+                options.update(user_input)
+                return self.async_create_entry(title="", data=options)
+        values = dict(self.config_entry.options) | (user_input or {})
+        return self.async_show_form(
+            step_id="weather",
+            errors=errors,
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        "weather_entity",
+                        description={"suggested_value": values.get("weather_entity")},
+                    ): selector.EntitySelector(selector.EntitySelectorConfig(domain="weather")),
+                    vol.Optional(
+                        "pv_inhibit_entity",
+                        description={"suggested_value": values.get("pv_inhibit_entity")},
+                    ): selector.EntitySelector(
+                        selector.EntitySelectorConfig(domain="binary_sensor")
+                    ),
+                    vol.Required(
+                        "weather_stale_seconds", default=values.get("weather_stale_seconds", 3600)
+                    ): number(60, 86400),
                 }
             ),
         )
