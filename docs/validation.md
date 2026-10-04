@@ -11,4 +11,4 @@ Validated 4 October 2026 on macOS arm64, Python 3.14.4, Home Assistant 2026.9.4 
 
 Coverage includes setup with missing inputs, W/kW conversion, non-finite/invalid/negative values, source freshness including unchanged reports, missing planes, weighted aggregation, directional geometry, hysteresis/dwell, EMA timing, cloud-edge ratios, reloads, registry cleanup, listener cleanup, configuration editing and diagnostics redaction.
 
-GitHub Actions and the remote HACS validator must run after publication; they have not been represented as locally executed. No live inverter or field calibration has been performed. These software tests do not establish real-world sunlight-classification accuracy.
+The initial [GitHub Validate run](https://github.com/toak/ha-pv-sunshine/actions/runs/37181290133) also passed all three jobs on Linux: tests, official Hassfest and HACS. Later commits and the release tag retain the same required checks. No live inverter or field calibration has been performed. These software tests do not establish real-world sunlight-classification accuracy.
