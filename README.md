@@ -4,6 +4,8 @@
 
 **Turn your solar panels into a local sunshine sensor for Home Assistant.**
 
+[![Open PV Sunshine in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=toak&repository=ha-pv-sunshine&category=integration)
+
 PV Sunshine compares measured PV production with an approximate clear-sky reference for your roof. Use the resulting signals for blinds, shading and other building automations. It works with any inverter integration exposing production power in W or kW. There are no cloud calls, API keys or runtime downloads.
 
 > These are sunlight **estimates**, not measurements of cloud cover or direct irradiance. Curtailment, clipping, snow, shadows and inverter faults can look like clouds. Start by observing the sensors before connecting them to moving blinds.
@@ -16,7 +18,9 @@ PV Sunshine compares measured PV production with an approximate clear-sky refere
 
 ### HACS custom repository
 
-Add `https://github.com/toak/ha-pv-sunshine` in **HACS → ⋮ → Custom repositories**, category **Integration**. Download PV Sunshine and restart Home Assistant. This is a custom repository; availability in the default HACS catalogue requires separate review and is not implied.
+Click **Open in HACS** above, choose your Home Assistant instance, then confirm the repository and download in HACS. HACS must already be installed. Restart Home Assistant after downloading, then add **PV Sunshine** under Devices & services. The button opens the installation screen; it cannot silently install or restart your instance.
+
+If you prefer the manual route, add `https://github.com/toak/ha-pv-sunshine` in **HACS → ⋮ → Custom repositories**, category **Integration**. Download PV Sunshine and restart Home Assistant. This is a custom repository; availability in the default HACS catalogue requires separate review and is not implied.
 
 ### Manual installation
 
