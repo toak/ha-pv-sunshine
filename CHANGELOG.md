@@ -2,7 +2,7 @@
 
 ## 0.1.0
 
-Initial local release candidate:
+Initial community release:
 
 - Multiple independently metered PV planes with setup and options flows.
 - Fully local Haurwitz reference, plane transposition and adjustable performance factor.

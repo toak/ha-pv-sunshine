@@ -16,7 +16,7 @@ PV Sunshine compares measured PV production with an approximate clear-sky refere
 
 ### HACS custom repository
 
-After the repository is published, add `https://github.com/toak/ha-pv-sunshine` in **HACS → ⋮ → Custom repositories**, category **Integration**. Download PV Sunshine and restart Home Assistant. This is a custom repository; availability in the default HACS catalogue requires separate review and is not implied.
+Add `https://github.com/toak/ha-pv-sunshine` in **HACS → ⋮ → Custom repositories**, category **Integration**. Download PV Sunshine and restart Home Assistant. This is a custom repository; availability in the default HACS catalogue requires separate review and is not implied.
 
 ### Manual installation
 
