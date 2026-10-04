@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible problem with PV Sunshine
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Home Assistant and PV Sunshine versions
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened and what did you expect?
+      description: Include steps to reproduce and whether the inverter was curtailed or shaded.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source units and report interval
+      description: For example W, every 10 seconds. Do not share credentials.
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics or relevant log excerpts
+      description: Review and redact before sharing. Production values and roof geometry can reveal information about your home.

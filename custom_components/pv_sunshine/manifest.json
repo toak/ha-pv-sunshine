@@ -1,0 +1,14 @@
+{
+  "domain": "pv_sunshine",
+  "name": "PV Sunshine",
+  "codeowners": [
+    "@toak"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/toak/ha-pv-sunshine",
+  "integration_type": "helper",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/toak/ha-pv-sunshine/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

@@ -1,0 +1,108 @@
+{
+  "title": "PV Sunshine",
+  "config": {
+    "step": {
+      "user": {
+        "title": "PV Sunshine",
+        "description": "Turn local PV production into sunlight estimates for automations. Configure Home Assistant location accurately first.",
+        "data": {
+          "name": "Installation name"
+        }
+      },
+      "plane": {
+        "title": "PV plane",
+        "description": "Use a separate production sensor for each plane. Never combine a total sensor with its component strings. Azimuth: north 0\u00b0, east 90\u00b0, south 180\u00b0, west 270\u00b0.",
+        "data": {
+          "name": "Plane name",
+          "entity_id": "PV production power sensor (W or kW)",
+          "azimuth": "Azimuth (\u00b0 clockwise from north)",
+          "tilt": "Tilt (\u00b0 from horizontal)",
+          "peak_kw": "Installed peak power (kWp)",
+          "performance_factor": "Performance factor"
+        }
+      },
+      "more": {
+        "title": "Add another plane?",
+        "data": {
+          "add_another": "Add another separately metered plane"
+        }
+      }
+    },
+    "error": {
+      "duplicate_source": "This sensor is already assigned to another plane.",
+      "invalid_source": "Select an existing sensor with W or kW units. Energy, grid and battery sensors are not suitable."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "menu_options": {
+          "tuning": "Detection settings",
+          "add_plane": "Add a plane",
+          "edit_plane": "Edit a plane",
+          "remove_plane": "Remove a plane"
+        }
+      },
+      "tuning": {
+        "title": "Detection settings",
+        "description": "Ratios are fractions (0.75 = 75%). Freshness uses the last sensor report, including unchanged reports.",
+        "data": {
+          "smoothing_seconds": "Smoothing time constant (s)",
+          "on_ratio": "Direct sun on ratio",
+          "off_ratio": "Direct sun off ratio",
+          "on_delay": "Direct sun on delay (s)",
+          "off_delay": "Direct sun off delay (s)",
+          "condition_delay": "Stable condition delay (s)",
+          "stale_seconds": "Source freshness timeout (s)",
+          "min_elevation": "Minimum sun elevation (\u00b0)",
+          "min_expected_fraction": "Minimum expected power / peak power"
+        }
+      },
+      "add_plane": {
+        "title": "PV plane",
+        "description": "Use a separate production sensor for each plane. Never combine a total sensor with its component strings. Azimuth: north 0\u00b0, east 90\u00b0, south 180\u00b0, west 270\u00b0.",
+        "data": {
+          "name": "Plane name",
+          "entity_id": "PV production power sensor (W or kW)",
+          "azimuth": "Azimuth (\u00b0 clockwise from north)",
+          "tilt": "Tilt (\u00b0 from horizontal)",
+          "peak_kw": "Installed peak power (kWp)",
+          "performance_factor": "Performance factor"
+        }
+      },
+      "update_plane": {
+        "title": "PV plane",
+        "description": "Use a separate production sensor for each plane. Never combine a total sensor with its component strings. Azimuth: north 0\u00b0, east 90\u00b0, south 180\u00b0, west 270\u00b0.",
+        "data": {
+          "name": "Plane name",
+          "entity_id": "PV production power sensor (W or kW)",
+          "azimuth": "Azimuth (\u00b0 clockwise from north)",
+          "tilt": "Tilt (\u00b0 from horizontal)",
+          "peak_kw": "Installed peak power (kWp)",
+          "performance_factor": "Performance factor"
+        }
+      },
+      "edit_plane": {
+        "title": "Choose a plane to edit",
+        "data": {
+          "plane": "Plane"
+        }
+      },
+      "remove_plane": {
+        "title": "Choose a plane to remove",
+        "description": "The selected plane and its entities will be removed.",
+        "data": {
+          "plane": "Plane"
+        }
+      }
+    },
+    "error": {
+      "duplicate_source": "This sensor is already assigned to another plane.",
+      "invalid_source": "Select an existing sensor with W or kW units. Energy, grid and battery sensors are not suitable.",
+      "threshold_order": "The off ratio must be lower than the on ratio."
+    },
+    "abort": {
+      "last_plane": "At least one plane is required. Remove the integration to delete the last plane."
+    }
+  }
+}
