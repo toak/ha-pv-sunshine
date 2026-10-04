@@ -25,6 +25,8 @@ async def test_setup_multiple_and_duplicate(hass):
         r["flow_id"], INPUT | {"name": "West", "entity_id": "sensor.pv_west", "azimuth": 270}
     )
     r = await hass.config_entries.flow.async_configure(r["flow_id"], {"add_another": False})
+    assert r["step_id"] == "weather"
+    r = await hass.config_entries.flow.async_configure(r["flow_id"], {})
     assert r["type"] == data_entry_flow.FlowResultType.CREATE_ENTRY
     assert len(r["data"]["planes"]) == 2
     assert r["data"]["planes"][0]["id"] != r["data"]["planes"][1]["id"]

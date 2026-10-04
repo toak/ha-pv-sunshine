@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+- Offer optional weather enrichment during initial setup, after PV planes.
+- Allow completing setup without a weather source; preserve settings access for later changes.
+- Share validation and browser-serializable controls between setup and options.
+- Test both setup paths through actual config-entry and weather-entity creation.
+
 ## 0.2.0
 
 - Optional weather enrichment: refine regional sky conditions with stable local PV evidence.

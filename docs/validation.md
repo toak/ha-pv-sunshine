@@ -20,3 +20,7 @@ The initial tests missed HA's HTTP form serialization boundary. Reproduced the f
 ## 0.2.0 weather enrichment
 
 59 tests pass against HA 2026.9.4; combined statement/branch coverage is 99.66%. The weather module and enrichment policy have 100% coverage. Cases include sunny/cloudy refinement, preserved rain/snow/fog/wind, warm-up and nighttime fallback, stale/missing sources, optional inhibition, feedback-loop rejection, option persistence/removal, privacy redaction, source unit conversion and all three forecast types. Ruff and local official Hassfest pass. Tests use synthetic HA states and mocked provider forecast responses; no live-provider accuracy or real-home field trial is claimed.
+
+## 0.2.1 initial weather setup
+
+61 tests pass with 99.67% combined statement/branch coverage. New regression cases serialize the initial weather screen, reject an invalid source and verify actual entry/platform creation both with and without weather enrichment. Existing multi-plane and options flows continue to pass.

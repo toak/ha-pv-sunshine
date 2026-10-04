@@ -20,7 +20,7 @@ Adaptive Cover is the inspiration and a potential consumer of these signals; PV 
 
 ### Enrich regional weather with local sunshine
 
-From **v0.2.0**, open **PV Sunshine → Configure → Weather enrichment** and select an existing Home Assistant weather entity. This creates **Local weather**, normally `weather.pv_sunshine_local_weather`, which you can select as the weather input in your cover controller. Entity IDs depend on your installation name and existing entities; use the actual ID shown by Home Assistant.
+From **v0.2.1**, initial setup offers a **Weather enrichment** step after your PV planes. Select an existing Home Assistant weather entity, or leave the selection empty and submit to finish with PV sensors only. For existing installations, use **PV Sunshine → Configure → Weather enrichment** to enable or change it. This creates **Local weather**, normally `weather.pv_sunshine_local_weather`, which you can select as the weather input in your cover controller. Entity IDs depend on your installation name and existing entities; use the actual ID shown by Home Assistant.
 
 For example, your provider can report `partlycloudy` while PV Sunshine reports `sunny` or `cloudy` based on stable local PV evidence. This **enriches** regional weather; it does not average the two sources or convert PV power into a cloud-cover percentage.
 
@@ -70,6 +70,7 @@ Copy `custom_components/pv_sunshine` into your Home Assistant `config/custom_com
 3. Enter azimuth (north 0°, east 90°, south 180°, west 270°), tilt (0° horizontal, 90° vertical) and installed panel power in kWp.
 4. Start with performance factor **0.85**. This scales the model for system losses and can be adjusted after observing a clear day.
 5. Add more planes if they have their own independent power sensors.
+6. On the **Weather enrichment** screen, optionally select your existing weather entity. Leave it blank and submit to skip enrichment.
 
 For example, 11 × 450 W panels correspond to **4.95 kWp**, regardless of the inverter's nominal rating. Use your actual panel rating. Do not assign the same sensor twice, or combine an inverter total with the strings it already includes. The UI rejects an identical source assigned twice within an installation; it cannot detect overlapping sensors from different integrations.
 

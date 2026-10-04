@@ -26,11 +26,21 @@
         "data": {
           "add_another": "Add another separately metered plane"
         }
+      },
+      "weather": {
+        "title": "Enrich existing weather with local sunshine",
+        "description": "Optional: enrich an existing weather entity with local PV sunshine. Leave the weather entity empty and submit to use PV sensors only. You can change this later in Configure \u2192 Weather enrichment. An optional binary sensor blocks PV overrides when on or unavailable (for example inverter curtailment).",
+        "data": {
+          "weather_entity": "Existing weather entity",
+          "pv_inhibit_entity": "PV inference blocked / curtailment sensor",
+          "weather_stale_seconds": "Weather report freshness timeout (seconds)"
+        }
       }
     },
     "error": {
       "duplicate_source": "This sensor is already assigned to another plane.",
-      "invalid_source": "Select an existing sensor with W or kW units. Energy, grid and battery sensors are not suitable."
+      "invalid_source": "Select an existing sensor with W or kW units. Energy, grid and battery sensors are not suitable.",
+      "invalid_weather_source": "Select an existing entity of the requested type. PV Sunshine outputs cannot be used as inputs."
     }
   },
   "options": {
